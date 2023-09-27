@@ -71,3 +71,11 @@ bool is_valid()
     //still need to implement
     return true;
 }
+
+int main()
+{
+    uno game;
+
+    cout << "Starting a game of uno..." << endl;
+    game.startUno();
+}
