@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdlib>
 #include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 /*  TO DO LIST
@@ -176,11 +177,11 @@ void giveCard(int playerNumber, int numberOfGives = 1)
 
     while (currentGives != numberOfGives) {
         int random_color = rand() % 5, random_inv = rand() % 13;
-        int name_of_card = 0;
+        int name_of_card = -1;
 
         switch (random_color) {
             case RED:
-                if (colorInventory[RED] != 0 && gameInventory[random_inv] != 0) {
+                if (colorInventory[RED] > 0 && gameInventory[random_inv] > 0) {
                     colorInventory[RED]--;
                     gameInventory[random_inv]--;
 
@@ -190,7 +191,7 @@ void giveCard(int playerNumber, int numberOfGives = 1)
                 break;
 
             case GREEN:
-                if (colorInventory[GREEN] != 0 && gameInventory[random_inv] != 0) {
+                if (colorInventory[GREEN] > 0 && gameInventory[random_inv] > 0) {
                     colorInventory[GREEN]--;
                     gameInventory[random_inv]--;
 
@@ -200,7 +201,7 @@ void giveCard(int playerNumber, int numberOfGives = 1)
                 break;
         
             case BLUE:
-                if (colorInventory[BLUE] != 0 && gameInventory[random_inv] != 0) {
+                if (colorInventory[BLUE] > 0 && gameInventory[random_inv] > 0) {
                     colorInventory[BLUE]--;
                     gameInventory[random_inv]--;
 
@@ -210,7 +211,7 @@ void giveCard(int playerNumber, int numberOfGives = 1)
                 break;
 
             case YELLOW:
-                if (colorInventory[YELLOW] != 0 && gameInventory[random_inv] != 0) {
+                if (colorInventory[YELLOW] > 0 && gameInventory[random_inv] > 0) {
                     colorInventory[YELLOW]--;
                     gameInventory[random_inv]--;
 
@@ -226,6 +227,11 @@ void giveCard(int playerNumber, int numberOfGives = 1)
                     name_of_card = random_inv + 56;
                     //cout << card_converter[random_inv + 56] << endl;
                 }
+                break;
+        }
+
+        if (name_of_card == -1) {
+            continue;
         }
 
         if (playerNumber == 0) {
@@ -239,6 +245,22 @@ void giveCard(int playerNumber, int numberOfGives = 1)
     }
 }
 
+void place_card(string input)
+{
+    string card_name;
+    for (auto x = card_converter.begin(); x != card_converter.end(); x++) {
+        card_name = x->second;
+
+        if (card_name[0] == input[0]) {
+            transform(card_name.begin(), card_name.end(), card_name.begin(), ::toupper);
+
+            if (card_name == input) {
+                cout << "they match!" << endl;
+            }
+        }
+    }
+}
+
 void yourTurn()
 {
     cout << "It is your turn!" << endl;
@@ -249,7 +271,12 @@ void yourTurn()
         cout << card_converter[playerInventory[x]] << endl;
     }
     cout << "==============" << endl;
-    cout << "Please type a valid move" << endl;
+
+    string input;
+    cout << "Please type a valid move (ex. Red 2 or Draw 2)" << endl;
+    cin >> input;
+
+    place_card(input);
 }
 
 void botTurn()
@@ -269,9 +296,20 @@ int main()
     cout << endl;
 
     gameReset();
+
+    //Inital Start
     giveCard(0, 10);
     giveCard(1, 10);
     yourTurn();
+
+    /*
+    while (true) {
+        yourTurn();
+    }
+    */
+
+    //actualy game
+
 
     return 0;
 }
